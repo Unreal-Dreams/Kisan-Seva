@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "237745290470",
+    "project_id": "fasal-mandi",
+    "storage_bucket": "fasal-mandi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237745290470:android:b3d8242ea14a24410ecf27",
+        "android_client_info": {
+          "package_name": "com.example.fasalmandi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237745290470-qmqaak3kq2djn65drgj0cegd5m55rf5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrWscaNMh2-WZJJNZKpkD2hET2u6wF7lM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237745290470-qmqaak3kq2djn65drgj0cegd5m55rf5g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

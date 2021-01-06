@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">फसल मंडी</string>
+    <string name="farmer_button">किसान</string>
+    <string name="company_button">कंपनी</string>
+</resources>
