@@ -34,11 +34,12 @@ public class UsertypeActivity extends AppCompatActivity {
     SharedPreferences language=null;
     SharedPreferences userType=null;
     SharedPreferences verified=null;
+    SharedPreferences user=null;
     Context context;
     Resources resources;
     List<AuthUI.IdpConfig> providers;
     private static final int MY_REQUEST_CODE = 1781;
-    public FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
     ProgressDialog progressDialog;
     private String firebaseUserId;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -51,6 +52,7 @@ public class UsertypeActivity extends AppCompatActivity {
         language = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
         userType = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
         verified = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
+        user= getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
 
         farmerButton=findViewById(R.id.farmerButton);
         companyButton=findViewById(R.id.companyButton);
@@ -66,7 +68,9 @@ public class UsertypeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userType.edit().putString("userType","farmer").apply();
-               signIn();
+//               signIn();
+                startActivity(new Intent(UsertypeActivity.this, FarmerLoginActivity.class));
+                finish();
             }
         });
 
@@ -74,7 +78,7 @@ public class UsertypeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userType.edit().putString("userType","company").apply();
-                signIn();
+//                signIn();
             }
         });
     }
@@ -113,15 +117,17 @@ public class UsertypeActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
                 //Get user
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser != null) {
                     progressDialog = new ProgressDialog(UsertypeActivity.this);
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialog.setTitle("Getting user data..");
                     progressDialog.setCancelable(false);
                     progressDialog.show();
 
-                    firebaseUserId = user.getUid();
+                    user.edit().putBoolean("user",true).apply();
+
+                    firebaseUserId = firebaseUser.getUid();
                     String tempUserType = userType.getString("userType", null);
                     if (tempUserType != null) {
                         db.collection(tempUserType).document(firebaseUserId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -129,7 +135,7 @@ public class UsertypeActivity extends AppCompatActivity {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists()) {
                                     if (documentSnapshot.getBoolean("verified")) {
-                                        verified.edit().putBoolean("verified", true).apply();
+                                        verified.edit().putBoolean("verified", true).commit();
                                         progressDialog.dismiss();
                                         startActivity(new Intent(UsertypeActivity.this, MainActivity.class));
                                         finish();
@@ -142,7 +148,7 @@ public class UsertypeActivity extends AppCompatActivity {
                                 } else {
                                     Map<String, Object> userInfo = new HashMap<>();
                                     userInfo.put("verified", false);
-                                    userInfo.put("mobileNo", user.getPhoneNumber());
+                                    userInfo.put("mobileNo", firebaseUser.getPhoneNumber());
                                     db.collection(tempUserType).document(firebaseUserId).set(userInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
