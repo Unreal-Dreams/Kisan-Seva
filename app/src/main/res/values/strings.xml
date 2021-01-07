@@ -3,4 +3,30 @@
     <string name="farmer_button">FARMER</string>
     <string name="company_button">COMPANY</string>
     <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="type">Type</string>
+    <string name="demo_type">Maize</string>
+    <string name="quantity">Quantity</string>
+    <string name="weight">Weight</string>
+    <string name="address">Address</string>
+    <string name="edit">Edit</string>
+    <string name="submit">Submit</string>
+    <string name="intro">Welcome to Fasal Mandi App</string>
+    <string name="login">Enter Your  Mobile Number</string>
+    <string name="getotp">Get OTP</string>
+    <string name="addres_demo">Rahul Raj,Henry bazar, Motihari, East Champaran, Bihar, 845401</string>
+
+
+    <string-array name="weight">
+        <item>Kg</item>
+        <item>Qunintol</item>
+        <item>Ton</item>
+    </string-array>
+    <string-array name="category">
+        <item>Better</item>
+        <item>Good</item>
+        <item>Bad</item>
+        <item>Worst</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>
