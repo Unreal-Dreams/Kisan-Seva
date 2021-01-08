@@ -3,14 +3,24 @@ package com.example.fasalmandi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
@@ -22,14 +32,24 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import in.aabhasjindal.otptextview.OTPListener;
+import in.aabhasjindal.otptextview.OtpTextView;
 
 public class FarmerLoginActivity extends AppCompatActivity{
 
     private static final String TAG = "PhoneAuthActivity";
 
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
+
+    String phoneno;
 
     private static final int STATE_INITIALIZED = 1;
     private static final int STATE_CODE_SENT = 2;
@@ -41,6 +61,13 @@ public class FarmerLoginActivity extends AppCompatActivity{
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
+    FirebaseUser firebaseUser;
+    ProgressDialog progressDialog;
+    SharedPreferences user=null;
+    SharedPreferences userType=null;
+    SharedPreferences verified=null;
+    private String firebaseUserId;
+
 
     private boolean mVerificationInProgress = false;
     private String mVerificationId;
@@ -48,8 +75,11 @@ public class FarmerLoginActivity extends AppCompatActivity{
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
 //    private ActivityPhoneAuthBinding mBinding;
-    Button verifyButton, otpSendButton;
-    EditText phoneNumberEditText, otpEditText;
+    Button verifyButton, otpSendButton, resendOtpButton;
+    private OtpTextView otpTextView;
+    EditText phoneNumberEditText;
+    private FirebaseFirestore db; 
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +90,20 @@ public class FarmerLoginActivity extends AppCompatActivity{
             onRestoreInstanceState(savedInstanceState);
         }
         phoneNumberEditText=findViewById(R.id.phoneEditText);
-        otpEditText=findViewById(R.id.otpEditText);
         verifyButton=findViewById(R.id.verifyButton);
+        otpTextView = findViewById(R.id.otp_view);
         otpSendButton=findViewById(R.id.otpButton);
+        resendOtpButton=findViewById(R.id.resendOtpButton);
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+        user= getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
+        userType = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
+        verified = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
+
+
+        db = FirebaseFirestore.getInstance();
 
         // Initialize phone auth callbacks
         // [START phone_auth_callbacks]
@@ -80,6 +117,7 @@ public class FarmerLoginActivity extends AppCompatActivity{
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
+                otpTextView.setOTP(credential.getSmsCode());
                 Log.d(TAG, "onVerificationCompleted:" + credential);
                 // [START_EXCLUDE silent]
                 mVerificationInProgress = false;
@@ -136,26 +174,85 @@ public class FarmerLoginActivity extends AppCompatActivity{
                 // Update UI
 //                updateUI(STATE_CODE_SENT);
                 // [END_EXCLUDE]
-            }                    };
+            }
+        };
         // [END phone_auth_callbacks]
+
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()==10){
+                    hideKeyboard(FarmerLoginActivity.this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        otpTextView.setOtpListener(new OTPListener() {
+            @Override
+            public void onInteractionListener() {
+
+            }
+
+            @Override
+            public void onOTPComplete(String otp) {
+                hideKeyboard(FarmerLoginActivity.this);
+            }
+        });
 
         otpSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(phoneNumberEditText.getText().length()!=10){
+                    Toast.makeText(FarmerLoginActivity.this, "Enter valid mobile no...", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                otpSendButton.setEnabled(false);
+                otpSendButton.setVisibility(View.INVISIBLE);
+                verifyButton.setEnabled(true);
+                verifyButton.setVisibility(View.VISIBLE);
+                resendOtpButton.setEnabled(true);
+                resendOtpButton.setVisibility(View.VISIBLE);
                 startPhoneNumberVerification("+91"+phoneNumberEditText.getText().toString());
             }
         });
         verifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(otpEditText.getText().toString())) {
-                    //mBinding.fieldVerificationCode.setError("Cannot be empty.");
+                if (TextUtils.isEmpty(otpTextView.getOTP())) {
+                    Toast.makeText(FarmerLoginActivity.this,"Otp is empty",Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                verifyPhoneNumberWithCode(mVerificationId, otpEditText.getText().toString());
+                verifyPhoneNumberWithCode(mVerificationId, otpTextView.getOTP());
             }
         });
+        resendOtpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resendVerificationCode(+91+phoneNumberEditText.getText().toString(),mResendToken);
+            }
+        });
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     // [START on_start_check_user]
@@ -234,7 +331,57 @@ public class FarmerLoginActivity extends AppCompatActivity{
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
 
-                            FirebaseUser user = task.getResult().getUser();
+                            firebaseUser= task.getResult().getUser();
+                            if (firebaseUser != null) {
+                                progressDialog = new ProgressDialog(FarmerLoginActivity.this);
+                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialog.setTitle("Getting user data..");
+                                progressDialog.setCancelable(false);
+                                progressDialog.show();
+
+                                user.edit().putBoolean("user",true).apply();
+
+                                firebaseUserId = firebaseUser.getUid();
+                                String tempUserType = userType.getString("userType", null);
+                                if (tempUserType != null) {
+                                    db.collection(tempUserType).document(firebaseUserId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot.exists()) {
+                                                if (documentSnapshot.getBoolean("verified")) {
+                                                    verified.edit().putBoolean("verified", true).commit();
+                                                    progressDialog.dismiss();
+                                                    startActivity(new Intent(FarmerLoginActivity.this, MainActivity.class));
+                                                    finish();
+                                                } else {
+                                                    verified.edit().putBoolean("verified", false).apply();
+                                                    progressDialog.dismiss();
+                                                    startActivity(new Intent(FarmerLoginActivity.this, VerificationActivity.class));
+                                                    finish();
+                                                }
+                                            } else {
+                                                Map<String, Object> userInfo = new HashMap<>();
+                                                userInfo.put("verified", false);
+                                                userInfo.put("mobileNo", firebaseUser.getPhoneNumber());
+                                                db.collection(tempUserType).document(firebaseUserId).set(userInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        progressDialog.dismiss();
+                                                        startActivity(new Intent(FarmerLoginActivity.this, VerificationActivity.class));
+                                                        finish();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(FarmerLoginActivity.this, "Try again..", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(FarmerLoginActivity.this, "Try again..", Toast.LENGTH_LONG).show();
+                            }
                             // [START_EXCLUDE]
 //                            updateUI(STATE_SIGNIN_SUCCESS, user);
                             // [END_EXCLUDE]
