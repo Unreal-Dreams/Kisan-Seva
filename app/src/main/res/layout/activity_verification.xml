@@ -7,5 +7,15 @@
     tools:context=".VerificationActivity">
 
 
+    <FrameLayout
+        android:padding="5dp"
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
