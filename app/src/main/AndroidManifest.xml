@@ -14,6 +14,7 @@
         <activity android:name=".FarmerLoginActivity" />
         <activity android:name=".UsertypeActivity" />
         <activity android:name=".LanguageActivity" />
+        <activity android:name=".ProfileActivity"/>
         <activity android:name=".SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
