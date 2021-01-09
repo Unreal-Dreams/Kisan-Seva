@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
                             finish();
                         }else{
                             if(!verified.getBoolean("verified",false)){
-                                startActivity(new Intent(SplashActivity.this, VerificationActivity.class));
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                                 finish();
                             }else {
                                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
