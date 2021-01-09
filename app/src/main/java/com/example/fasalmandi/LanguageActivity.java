@@ -2,6 +2,7 @@ package com.example.fasalmandi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ public class LanguageActivity extends AppCompatActivity {
 
     SharedPreferences language=null;
     Button hindiButton,englishButton;
+    Context context;
 
 
     @Override
@@ -25,7 +27,8 @@ public class LanguageActivity extends AppCompatActivity {
         hindiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                language.edit().putString("language","hindi").apply();
+                language.edit().putString("language","hi").apply();
+                context = LanguageChanger.setLocale(LanguageActivity.this,"hi");
                 startActivity(new Intent(LanguageActivity.this,UsertypeActivity.class));
                 finish();
             }
@@ -34,7 +37,8 @@ public class LanguageActivity extends AppCompatActivity {
         englishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                language.edit().putString("language", "english").apply();
+                language.edit().putString("language", "en").apply();
+                context = LanguageChanger.setLocale(LanguageActivity.this,"en");
                 startActivity(new Intent(LanguageActivity.this,UsertypeActivity.class));
                 finish();
             }

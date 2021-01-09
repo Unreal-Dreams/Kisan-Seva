@@ -41,18 +41,23 @@ public class UsertypeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usertype);
+
         language = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
         userType = getSharedPreferences("com.example.fasalmandi", MODE_PRIVATE);
-
+        if(LanguageChanger.getLanguage(getApplicationContext()).length()!=0){
+            context = LanguageChanger.setLocale(UsertypeActivity.this, LanguageChanger.getLanguage(getApplicationContext()));
+        }else{
+            context = LanguageChanger.setLocale(UsertypeActivity.this, "en");
+        }
+//        if(language.getString("language","english").equals("hindi")) {
+//            context = LanguageChanger.setLocale(UsertypeActivity.this, "hi");
+//            resources = context.getResources();
+//        }
+        resources = context.getResources();
         farmerButton=findViewById(R.id.farmerButton);
         companyButton=findViewById(R.id.companyButton);
-
-        if(language.getString("language","english").equals("hindi")) {
-            context = LanguageChanger.setLocale(UsertypeActivity.this, "hi");
-            resources = context.getResources();
-            farmerButton.setText(resources.getString(R.string.farmer_button));
-            companyButton.setText(resources.getString(R.string.company_button));
-        }
+        farmerButton.setText(resources.getString(R.string.farmer_button));
+        companyButton.setText(resources.getString(R.string.company_button));
 
         farmerButton.setOnClickListener(new View.OnClickListener() {
             @Override

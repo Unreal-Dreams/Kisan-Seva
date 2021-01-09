@@ -1,74 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_light"
+    android:background="@drawable/login_background"
     tools:context=".FarmerLoginActivity">
 
+
+    <ImageView
+        android:id="@+id/textView2"
+        android:layout_width="189dp"
+        android:layout_height="43dp"
+        android:layout_above="@+id/phoneEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="124dp"
+        android:layout_marginLeft="124dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginRight="98dp"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/login_back_text"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/phoneEditText"
         android:layout_width="213dp"
         android:layout_height="45dp"
-        android:background="@drawable/edit_text_border"
+        android:layout_above="@+id/otp_view"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="78dp"
+        android:layout_marginRight="78dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/enter_phone_back"
         android:ems="10"
-        android:maxLength="10"
         android:hint="  mobile no..."
         android:inputType="phone"
+        android:maxLength="10"
         android:padding="10dp"
-        android:textColorHint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.381" />
-
-    <Button
-        android:id="@+id/verifyButton"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:enabled="false"
-        android:text="Verify"
-        android:visibility="invisible"
-        app:backgroundTint="#3F51B5"
-        app:cornerRadius="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
-
-    <Button
-        android:id="@+id/resendOtpButton"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:enabled="false"
-        android:text="Re-send otp"
-        android:visibility="invisible"
-        app:backgroundTint="#3F51B5"
-        app:cornerRadius="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
-
-    <Button
-        android:id="@+id/otpButton"
-        android:layout_width="127dp"
-        android:layout_height="48dp"
-        android:text="send otp"
-        app:backgroundTint="#3F51B5"
-        app:cornerRadius="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"/>
+        android:textColor="@color/white"
+        android:textColorHint="#FFFFFF" />
 
     <!--    <EditText-->
     <!--        android:id="@+id/otpEditText"-->
@@ -82,10 +57,89 @@
     <!--        app:layout_constraintTop_toTopOf="parent"-->
     <!--        app:layout_constraintVertical_bias="0.341" />-->
 
+
+    <Button
+        android:id="@+id/verifyButton"
+        android:layout_width="131dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="204dp"
+        android:layout_marginRight="204dp"
+        android:layout_marginBottom="274dp"
+        android:backgroundTint="#87CA7C"
+        android:enabled="false"
+        android:text="Verify"
+        app:cornerRadius="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <Button
+        android:id="@+id/resendOtpButton"
+        android:layout_width="144dp"
+        android:layout_height="58dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="49dp"
+        android:layout_marginRight="49dp"
+        android:layout_marginBottom="273dp"
+        android:enabled="false"
+        android:text="Re-send otp"
+        app:cornerRadius="8dp"
+        android:backgroundTint="#87CA7C"
+        android:textColor="@color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <Button
+        android:id="@+id/otpButton"
+        android:layout_width="131dp"
+        android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="275dp"
+        android:layout_toStartOf="@+id/resendOtpButton"
+        android:layout_toLeftOf="@+id/resendOtpButton"
+        app:cornerRadius="8dp"
+        android:backgroundTint="#87CA7C"
+        android:text="@string/getotp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65" />
+
     <in.aabhasjindal.otptextview.OtpTextView
         android:id="@+id/otp_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/otpButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="38dp"
         android:textColor="#ffffff"
         android:visibility="visible"
         app:bar_enabled="true"
@@ -101,29 +155,20 @@
         app:otp_text_size="24dp"
         app:width="40dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="115dp"
-        android:layout_marginBottom="25dp"
-        android:text="Please enter your mobile no .."
-        android:textColor="#3F51B5"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/phoneEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.822" />
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_above="@+id/otp_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="24dp"
+        android:layout_toStartOf="@+id/phoneEditText"
+        android:layout_toLeftOf="@+id/phoneEditText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/phoneEditText"
         app:layout_constraintHorizontal_bias="0.0"
@@ -132,4 +177,4 @@
         app:layout_constraintVertical_bias="0.381"
         app:srcCompat="@drawable/ic_baseline_call_24"
         tools:ignore="VectorDrawableCompat" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
