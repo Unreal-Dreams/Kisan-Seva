@@ -356,7 +356,7 @@ public class FarmerLoginActivity extends AppCompatActivity{
                                                 } else {
                                                     verified.edit().putBoolean("verified", false).apply();
                                                     progressDialog.dismiss();
-                                                    startActivity(new Intent(FarmerLoginActivity.this, VerificationActivity.class));
+                                                    startActivity(new Intent(FarmerLoginActivity.this, MainActivity.class));
                                                     finish();
                                                 }
                                             } else {
@@ -367,7 +367,7 @@ public class FarmerLoginActivity extends AppCompatActivity{
                                                     @Override
                                                     public void onSuccess(Void unused) {
                                                         progressDialog.dismiss();
-                                                        startActivity(new Intent(FarmerLoginActivity.this, VerificationActivity.class));
+                                                        startActivity(new Intent(FarmerLoginActivity.this, MainActivity.class));
                                                         finish();
                                                     }
                                                 });

@@ -7,20 +7,4 @@
     tools:context=".VerificationActivity">
 
 
-    <FrameLayout
-        android:id="@+id/frame_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="57dp">
-
-        <Button
-            android:id="@+id/accountcheckButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account Check button" />
-    </FrameLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
