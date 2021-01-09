@@ -12,6 +12,7 @@
         android:theme="@style/Theme.FasalMandi"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".VerificationActivity" />
+        <activity android:name=".CropDetilActivity" />
         <activity android:name=".FarmerLoginActivity" />
         <activity android:name=".UsertypeActivity" />
         <activity android:name=".LanguageActivity" />

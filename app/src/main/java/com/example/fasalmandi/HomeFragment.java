@@ -1,6 +1,7 @@
 package com.example.fasalmandi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -189,6 +190,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 super(itemView);
                 productName=itemView.findViewById(R.id.productname);
                 productImage = itemView.findViewById(R.id.productimage);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = recyclerView.getChildAdapterPosition(v);
+                        Intent intent = new Intent(getActivity(),CropDetilActivity.class);
+                        intent.putExtra("name", productNames.get(position));
+                        intent.putExtra("image","a");
+                        startActivity(intent);
+                    }
+                });
 
                 //  cancel_button = itemView.findViewById(R.id.cancelButton);
             }

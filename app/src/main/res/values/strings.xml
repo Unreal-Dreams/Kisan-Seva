@@ -13,7 +13,13 @@
     <string name="intro">Welcome to Fasal Mandi App</string>
     <string name="login">Enter Your  Mobile Number</string>
     <string name="getotp">Get OTP</string>
+    <string name="typechecker">Please Enter the Type of Crop</string>
+    <string name="formchecker">Please Enter all the fields</string>
     <string name="addres_demo">Rahul Raj,Henry bazar, Motihari, East Champaran, Bihar, 845401</string>
+    <string name="internet_error">Please Check your Internet Connection</string>
+    <string name="queries_post">Your Queries is successfully posted, we will contct you in 24 Hours.</string>
+
+
 
 
     <string-array name="weight">

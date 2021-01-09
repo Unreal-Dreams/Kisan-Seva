@@ -216,8 +216,7 @@ public class FarmerLoginActivity extends AppCompatActivity{
                     Toast.makeText(FarmerLoginActivity.this, "Enter valid mobile no...", Toast.LENGTH_LONG).show();
                     return;
                 }
-                otpSendButton.setEnabled(false);
-                otpSendButton.setVisibility(View.INVISIBLE);
+                otpSendButton.setVisibility(View.GONE);
                 verifyButton.setEnabled(true);
                 verifyButton.setVisibility(View.VISIBLE);
                 resendOtpButton.setEnabled(true);

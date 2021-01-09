@@ -46,7 +46,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_home, container, false);
+        View v= inflater.inflate(R.layout.fragment_order, container, false);
         mRecyclerView = v.findViewById(R.id.my_recycler_view);
         if (mRecyclerView != null) {
             //to enable optimization of recyclerview
