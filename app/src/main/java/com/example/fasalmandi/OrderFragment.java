@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,9 +39,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     Boolean isScrolling = false;
     SwipeRefreshLayout mSwipeRefreshLayout;
     OrderAdapter myAdapter;
-    public OrderFragment() {
-        // Required empty public constructor
-    }
+
 
 
     @Override
@@ -48,7 +47,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_home, container, false);
-        mRecyclerView = v.findViewById(R.id.my_recycler_view_order);
+        mRecyclerView = v.findViewById(R.id.my_recycler_view);
         if (mRecyclerView != null) {
             //to enable optimization of recyclerview
             mRecyclerView.setHasFixedSize(true);
@@ -58,7 +57,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mRecyclerView.setLayoutManager(manager);
         myAdapter= new OrderAdapter(mRecyclerView,getContext(),new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>());
         mRecyclerView.setAdapter(myAdapter);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefreshorder);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark,
                 android.R.color.holo_green_dark,
@@ -70,7 +69,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
                 mSwipeRefreshLayout.setRefreshing(true);
                 LoadData();
-                //    Fetching data from server
+                // Fetching data from server
             }
         });
 
@@ -97,13 +96,12 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         });
         return v;
     }
-
     private void LoadData() {
         mSwipeRefreshLayout.setRefreshing(true);
         if(lastDocumentSnapshot == null){
-            query = db.collection("farmerOrder").limit(10);
+            query = db.collection("CropVariety").limit(10);
         }else{
-            query = db.collection("farmerOrder").startAfter(lastDocumentSnapshot).orderBy("time").limit(10);
+            query = db.collection("CropVariety").startAfter(lastDocumentSnapshot).limit(10);
         }
         query.get().addOnSuccessListener(getActivity(), new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -111,10 +109,10 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                     lastDocumentSnapshot = documentSnapshot;
                     String key = documentSnapshot.getId();
-                    String productName = documentSnapshot.getString("cropName");
-                    //String productImage = documentSnapshot.getString("productImage");
+                    String productName = documentSnapshot.getString("name");
+                    String productImage = documentSnapshot.getString("productImage");
 
-                    ((OrderAdapter)mRecyclerView.getAdapter()).update(key);
+                    ((OrderAdapter)mRecyclerView.getAdapter()).update(key,productName,productImage);
 
                     //quantity-copies,
                 }
@@ -143,8 +141,10 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         ArrayList<String> productNames=new ArrayList<>();
         ArrayList<String> productImages= new ArrayList<>();
 
-        public void update(String key){
+        public void update(String key,String productName,  String productImage){
             productKeys.add(key);
+            productNames.add(productName);
+            productImages.add(productImage);
             notifyDataSetChanged();  //refershes the recyler view automatically...
 
         }
@@ -159,13 +159,13 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         @NonNull
         @Override
-        public OrderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.crop_type_layout_card, parent, false);
-            return new OrderAdapter.ViewHolder(view);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.order_layout_card, parent, false);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull OrderAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.productName.setText(productNames.get(position));
             //   holder.productImage.setImageResource(productImages.get(position));
 
@@ -178,7 +178,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView productName;
+            TextView  productName;
             ImageView productImage;
 
             public ViewHolder(@NonNull View itemView) {
@@ -190,4 +190,5 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         }
     }
+
 }
