@@ -70,7 +70,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
                 mSwipeRefreshLayout.setRefreshing(true);
                 LoadData();
-                // Fetching data from server
+                //    Fetching data from server
             }
         });
 
